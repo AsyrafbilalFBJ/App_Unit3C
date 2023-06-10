@@ -93,7 +93,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         border: InputBorder.none,
                         hintText: 'Name',
                         hintStyle: GoogleFonts.quicksand(
-                            textStyle: const TextStyle(fontWeight: FontWeight.bold)),
+                            textStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -113,7 +114,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         border: InputBorder.none,
                         hintText: 'Email',
                         hintStyle: GoogleFonts.quicksand(
-                            textStyle: const TextStyle(fontWeight: FontWeight.bold)),
+                            textStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -134,7 +136,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         border: InputBorder.none,
                         hintText: 'Password',
                         hintStyle: GoogleFonts.quicksand(
-                            textStyle: const TextStyle(fontWeight: FontWeight.bold)),
+                            textStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -240,71 +243,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: const Color.fromARGB(255, 114, 113, 113),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        'OR',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 114, 113, 113),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 24.0),
-                Container(
-                  width: double.infinity,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(255, 201, 199, 199),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors
-                          .transparent, // Menghapus warna latar belakang ElevatedButton
-                      elevation: 0, // Menghapus bayangan ElevatedButton
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icon_google.png'),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Continue With Google',
-                          style: GoogleFonts.quicksand().copyWith(
-                            color: const Color.fromARGB(255, 46, 45,
-                                45), // Mengubah warna teks menjadi putih
-                            fontSize: 16, // Mengubah ukuran font teks
-                            fontWeight:
-                                FontWeight.bold, // Mengatur gaya huruf italic
-                          ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      // Logika login
-                    },
-                  ),
-                ),
                 const SizedBox(
                   height: 40,
                 ),
