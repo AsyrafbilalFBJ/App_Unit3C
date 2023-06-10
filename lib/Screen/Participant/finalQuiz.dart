@@ -20,6 +20,7 @@ class _ModulState extends State<FinalQuiz> {
   double _rating = 3.0;
   int? selectedValue;
   List<String> options = ['Pilihan 1', 'Pilihan 2', 'Pilihan 3'];
+
   @override
   Widget build(BuildContext context) {
     dynamic myData = widget.dataKelas;
@@ -368,6 +369,7 @@ class CustomDialog2 extends StatelessWidget {
           //   Navigator.of(context).pop();
           // },
           onPressed: () {
+            //declare variable
             _changeStatus(
                 myData['title'],
                 myData['description'],
@@ -381,7 +383,11 @@ class CustomDialog2 extends StatelessWidget {
                 myData['id_kelas'],
                 myData['uid'],
                 myData['status'],
-                myData['id_transaction']);
+                myData['id_transaction']
+            );
+            String idKelas = myData['id_kelas'];
+            String rate = myData['rate'];
+            _updateRate(idKelas, rate as double);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -448,4 +454,14 @@ class CustomDialog2 extends StatelessWidget {
       // 'uid': _database.push().key as String
     });
   }
+
+  Future<void> _updateRate(String idKelas, double rate) async {
+    DatabaseReference _dbclass =
+        FirebaseDatabase.instance.ref().child('classes/$idKelas');
+
+    _dbclass.update({
+      'rate': rate,
+    });
+
+    }
 }

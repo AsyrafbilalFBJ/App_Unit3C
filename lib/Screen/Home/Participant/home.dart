@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -9,7 +10,23 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  DatabaseReference _database = FirebaseDatabase.instance.ref().child('classes');
+
+  late List<dynamic> dataList;
+
   double _rating = 3.0;
+
+  String searchKeyword = '';
+
+  List<dynamic> searchResult = [];
+
+  void performSearch() {
+    setState(() {
+      searchResult = dataList
+          .where((data) => data['title'].toLowerCase().contains(searchKeyword.toLowerCase()))
+          .toList();
+    });
+  }
 
   List<Recommendation> recommendations = [
     Recommendation(
@@ -31,6 +48,23 @@ class _HomepageState extends State<Homepage> {
       registered: '7.543 Registered',
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    dataList = [];
+    _database = FirebaseDatabase.instance.ref().child('classes');
+
+    _database.onValue.listen((DatabaseEvent event) {
+      if (event.snapshot.value != null) {
+        setState(() {
+          Map<dynamic, dynamic>? dataMap =
+          event.snapshot.value as Map<dynamic, dynamic>?;
+          dataList = dataMap?.values.toList() ?? [];
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +97,8 @@ class _HomepageState extends State<Homepage> {
                     borderRadius: BorderRadius.circular(10),
                     color: const Color.fromARGB(255, 223, 217, 217),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(1.5),
+                  child: Padding(
+                    padding: const EdgeInsets.all(1.5),
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -74,6 +108,14 @@ class _HomepageState extends State<Homepage> {
                         ),
                         prefixIcon: Icon(Icons.search),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          searchKeyword = value;
+                        });
+                      },
+                      onSubmitted: (value) {
+                        performSearch();
+                      },
                     ),
                   ),
                 ),
@@ -100,7 +142,8 @@ class _HomepageState extends State<Homepage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailPage(
-                              recommendation: recommendations[index]),
+                            recommendation: recommendations[index],
+                          ),
                         ),
                       );
                     },
@@ -115,10 +158,11 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
+
   Widget buildRecommendationItem(Recommendation recommendation) {
     return Padding(
       padding:
-          const EdgeInsets.only(top: 8.0, right: 13, bottom: 8.0, left: 13),
+      const EdgeInsets.only(top: 8.0, right: 13, bottom: 8.0, left: 13),
       child: Container(
         width: double.infinity,
         height: 100,
@@ -147,7 +191,8 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   Text(
                     recommendation.title,
-                    style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 21, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
                   Text(
@@ -164,7 +209,8 @@ class _HomepageState extends State<Homepage> {
                         allowHalfRating: true,
                         itemCount: 1,
                         itemSize: 30,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemPadding:
+                        const EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -211,7 +257,7 @@ class Recommendation {
 class DetailPage extends StatelessWidget {
   final Recommendation recommendation;
 
-  const DetailPage({super.key, required this.recommendation});
+  const DetailPage({Key? key, required this.recommendation}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +273,8 @@ class DetailPage extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               recommendation.title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:unit3c_3/Screen/Participant/Forum.dart';
 import 'PageQuiz1.dart';
-// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Modul extends StatefulWidget {
   final dynamic dataKelas;
@@ -13,22 +13,6 @@ class Modul extends StatefulWidget {
 }
 
 class _ModulState extends State<Modul> {
-  // final videoURL = "https://www.youtube.com/watch?v=YMx8Bbev6T4";
-
-  // late YoutubePlayerController _controller;
-
-  // @override
-  // void initState() {
-  //   final videoID = YoutubePlayer.convertUrlToId(videoURL);
-
-  //   _controller = YoutubePlayerController(
-  //     initialVideoId: videoID!,
-  //     flags: const YoutubePlayerFlags(
-  //       autoPlay: false,
-  //     ),
-  //   );
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +183,12 @@ class _ModulState extends State<Modul> {
                     child: Align(
                       child: GestureDetector(
                         onTap: () {
-                          // Fungsi yang akan dijalankan saat container "Start" di klik
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Forum1(),
+                            ),
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(

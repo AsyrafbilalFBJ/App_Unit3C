@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class MForum extends StatefulWidget {
-  const MForum({Key? key}) : super(key: key);
+class Forum1 extends StatefulWidget {
+  const Forum1({super.key});
 
   @override
-  State<MForum> createState() => _MForumState();
+  State<Forum1> createState() => _ModulState();
 }
 
-class _MForumState extends State<MForum> {
+class _ModulState extends State<Forum1> {
   final String idforum = '-NXALXtdkEvPYux5sWUB';
 
   late List<Map<dynamic, dynamic>> dataMessage;
@@ -22,8 +22,8 @@ class _MForumState extends State<MForum> {
     _database.push().set(<String, dynamic>{
       'id': _database.push().key.toString(),
       'id_kelas': '-NX5qHN3Gya-cSh3fFt0',
-      'senderName': 'Mentor',
-      'senderId': 'Mentor',
+      'senderName': 'Saeful Anwar',
+      'senderId': 'Participant',
       'text': text,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
     });

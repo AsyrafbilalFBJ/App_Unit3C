@@ -15,16 +15,28 @@ class MHomepage extends StatefulWidget {
 
 class _HomepageState extends State<MHomepage> {
   DatabaseReference _database =
-      FirebaseDatabase.instance.reference().child('classes');
+      FirebaseDatabase.instance.ref().child('classes');
 
   late List<dynamic> dataList;
   // late List<dynamic> filteredList;
+
+  List<dynamic> searchResult = [];
+
+  String searchKeyword = '';
+
+  void performSearch() {
+    setState(() {
+      searchResult = dataList
+          .where((data) => data['title'].toLowerCase().contains(searchKeyword.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     dataList = [];
-    _database = FirebaseDatabase.instance.reference().child('classes');
+    _database = FirebaseDatabase.instance.ref().child('classes');
 
     _database.onValue.listen((DatabaseEvent event) {
       if (event.snapshot.value != null) {
@@ -140,7 +152,7 @@ class _HomepageState extends State<MHomepage> {
                     borderRadius: BorderRadius.circular(10),
                     color: const Color.fromARGB(255, 223, 217, 217),
                   ),
-                  child: const Padding(
+                  child:  Padding(
                     padding: EdgeInsets.all(1.5),
                     child: TextField(
                       decoration: InputDecoration(
@@ -151,11 +163,19 @@ class _HomepageState extends State<MHomepage> {
                         ),
                         prefixIcon: Icon(Icons.search),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          searchKeyword = value;
+                        });
+                      },
+                      onSubmitted: (value) {
+                        performSearch();
+                      },
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              // const SizedBox(height: 10),
               // Container(
               //   child: CarouselSlider.builder(
               //     itemCount: carouselItems.length,
@@ -308,6 +328,39 @@ class _HomepageState extends State<MHomepage> {
               //     ),
               //   ),
               // ),
+              if (searchKeyword != null && searchKeyword != '')
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Search Result ${searchKeyword}',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              if (searchKeyword != null && searchKeyword != '')
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: searchResult.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyClass(
+                                dataKelas: searchResult[index],
+                                user_id: mydataUid),
+                          ),
+                        );
+                      },
+                      child: buildRecommendationItem(searchResult[index]),
+                    );
+                  },
+                ),
               Padding(
                 padding: const EdgeInsets.only(left: 15),
                 child: Container(
@@ -390,8 +443,8 @@ class _HomepageState extends State<MHomepage> {
                   Row(
                     children: [
                       RatingBar.builder(
-                        initialRating: dataKelas['rate'],
-                        minRating: 1,
+                        initialRating: dataKelas['rate'].toDouble(),
+                        minRating: 1.0,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 1,
@@ -426,6 +479,8 @@ class _HomepageState extends State<MHomepage> {
     );
   }
 }
+
+
 
 class Recommendation {
   final String image;
